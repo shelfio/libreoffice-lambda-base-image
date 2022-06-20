@@ -44,7 +44,7 @@ workflows:
           tag: '7.3-node16-x86_64'
           dockerfile: Dockerfile.node16-x86_64
           no-output-timeout: 20m
-          public-registry: false
+          public-registry: true
           push-image: true
           region: ${AWS_DEFAULT_REGION}
           registry-id: AWS_ACCOUNT_ID
