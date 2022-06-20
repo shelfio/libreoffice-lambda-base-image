@@ -31,5 +31,6 @@ Other platforms are not supported yet. PRs are welcome!
 
 ## See Also
 
-* [libreoffica-lambda-layer](https://github.com/shelfio/libreoffice-lambda-layer) - deprecated
-* [aws-lambda-libreoffice](https://github.com/shelfio/aws-lambda-libreoffice) - will be updated soon to support this docker image
+* [aws-lambda-libreoffice](https://github.com/shelfio/aws-lambda-libreoffice) - utility to work with Docker version of LibreOffice in Lambda
+* [libreoffica-lambda-layer](https://github.com/shelfio/libreoffice-lambda-layer) - deprecated; this is the predecessor of this image
+
