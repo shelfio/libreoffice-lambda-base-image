@@ -1,0 +1,21 @@
+FROM public.ecr.aws/lambda/nodejs:16-x86_64
+
+# binutils is needed for "strip" command
+RUN yum install \
+    tar \
+    gzip \
+    libdbusmenu.x86_64 \
+    libdbusmenu-gtk2.x86_64 \
+    libSM.x86_64 \
+    xorg-x11-fonts-* \
+    google-noto-sans-cjk-fonts.noarch \
+    binutils.x86_64 \
+    -y
+
+RUN curl "https://ftp.halifax.rwth-aachen.de/tdf/libreoffice/stable/7.3.4/rpm/x86_64/LibreOffice_7.3.4_Linux_x86-64_rpm.tar.gz" | tar -xz
+
+RUN cd LibreOffice_7.3.4.2_Linux_x86-64_rpm/RPMS && \
+    yum install *.rpm -y && \
+    rm -rf /var/task/LibreOffice_7.3.4* && \
+    cd /opt/libreoffice7.3/ && \
+    strip ./**/* || true
