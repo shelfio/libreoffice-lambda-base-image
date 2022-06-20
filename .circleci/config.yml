@@ -25,7 +25,7 @@ workflows:
       - docker/hadolint:
           dockerfiles: Dockerfile.node16-x86_64
           executor-class: medium
-          ignore-rules: 'DL3033,SC3040,DL4006,DL3003,DL3032'
+          ignore-rules: 'DL3033,SC3040,DL4006,DL3003,DL3032,SC2015'
 
       - build:
           context: prod-us
