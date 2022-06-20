@@ -1,0 +1,1 @@
+# libreoffice-lambda-base-image
