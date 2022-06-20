@@ -1,3 +1,5 @@
+# hadolint ignore=DL3033 ignore=SC3040 ignore=DL4006 ignore=DL3003 ignore=DL3032
+
 FROM public.ecr.aws/lambda/nodejs:16-x86_64
 
 # binutils is needed for "strip" command
