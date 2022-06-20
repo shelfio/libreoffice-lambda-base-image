@@ -16,4 +16,20 @@ COPY handler.js ${LAMBDA_TASK_ROOT}/
 CMD [ "handler.handler" ]
 ```
 
+And your `handler.js`:
+
+```javascript
+const {execSync} = require('child_process');
+
+execSync(`
+  cd /tmp
+  libreoffice7.3 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  `);
+```
+
 Other platforms are not supported yet. PRs are welcome!
+
+## See Also
+
+* [libreoffica-lambda-layer](https://github.com/shelfio/libreoffice-lambda-layer) - deprecated
+* [aws-lambda-libreoffice](https://github.com/shelfio/aws-lambda-libreoffice) - will be updated soon to support this docker image
