@@ -4,7 +4,7 @@
 
 ## Usage
 
-Includes CJK fonts support!
+Includes CJK fonts support! 877 MB in size.
 
 ### Node.js 16 x86_64
 
