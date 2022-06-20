@@ -23,7 +23,7 @@ workflows:
   build_and_push_image:
     jobs:
       - docker/hadolint:
-          dockerfiles: Dockerfile
+          dockerfiles: Dockerfile.node16-x86_64
           executor-class: medium
 
       - build:
