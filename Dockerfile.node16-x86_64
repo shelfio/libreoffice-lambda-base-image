@@ -10,7 +10,8 @@ RUN yum install \
     xorg-x11-fonts-* \
     google-noto-sans-cjk-fonts.noarch \
     binutils.x86_64 \
-    -y
+    -y && \
+    yum clean all
 
 RUN curl "https://ftp.halifax.rwth-aachen.de/tdf/libreoffice/stable/7.3.4/rpm/x86_64/LibreOffice_7.3.4_Linux_x86-64_rpm.tar.gz" | tar -xz
 
