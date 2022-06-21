@@ -29,6 +29,14 @@ execSync(`
 
 Other platforms are not supported yet. PRs are welcome!
 
+## Troubleshooting
+
+<details>
+<summary>Command failed: Fatal Error: The application cannot be started. User installation could not be completed. </summary>
+
+Set environment variable `HOME=/tmp` in your Lambda function.
+</details>
+
 ## See Also
 
 * [aws-lambda-libreoffice](https://github.com/shelfio/aws-lambda-libreoffice) - utility to work with Docker version of LibreOffice in Lambda
