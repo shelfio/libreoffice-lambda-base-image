@@ -20,6 +20,9 @@ And your `handler.js`:
 
 ```javascript
 const {execSync} = require('child_process');
+const {writeFileSync} = require('fs');
+
+writeFileSync('/tmp/hello.txt', Buffer.from('Hello World!'));
 
 execSync(`
   cd /tmp
