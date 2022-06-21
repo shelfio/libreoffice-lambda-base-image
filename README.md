@@ -22,12 +22,14 @@ And your `handler.js`:
 const {execSync} = require('child_process');
 const {writeFileSync} = require('fs');
 
-writeFileSync('/tmp/hello.txt', Buffer.from('Hello World!'));
+module.exports.handler = () => {
+  writeFileSync('/tmp/hello.txt', Buffer.from('Hello World!'));
 
-execSync(`
+  execSync(`
   cd /tmp
   libreoffice7.3 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
+};
 ```
 
 Other platforms are not supported yet. PRs are welcome!
