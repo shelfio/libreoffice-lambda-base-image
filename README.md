@@ -8,6 +8,8 @@ Includes CJK fonts support! 877 MB in size.
 
 ### Node.js 16 x86_64
 
+> Set environment variable `HOME=/tmp` in your Lambda function.
+
 ```Dockerfile
 FROM public.ecr.aws/shelf/lambda-libreoffice-base:7.3-node16-x86_64
 
