@@ -29,7 +29,7 @@ module.exports.handler = () => {
 
   execSync(`
   cd /tmp
-  libreoffice7.3 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  libreoffice7.4 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
 };
 ```
