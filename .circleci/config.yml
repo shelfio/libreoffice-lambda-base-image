@@ -1,10 +1,13 @@
 version: 2.1
-parameters:
-    lo_version: '7.4-node16-x86_64'
 
 orbs:
   aws-ecr: circleci/aws-ecr@8.1.2
   docker: circleci/docker@2.1.2
+
+parameters:
+  docker_image_tag:
+    type: string
+    default: '7.4-node16-x86_64'
 
 jobs:
   build:
@@ -14,7 +17,7 @@ jobs:
       - aws-ecr/build-image:
           dockerfile: Dockerfile.node16-x86_64
           no-output-timeout: 10m
-          tag: << pipeline.parameters.lo_version >>
+          tag: << pipeline.parameters.docker_image_tag >>
           region: ${AWS_DEFAULT_REGION}
           registry-id: AWS_ACCOUNT_ID
           skip-when-tags-exist: false
@@ -44,7 +47,7 @@ workflows:
           aws-cli-version: latest
           create-repo: false
           repo: lambda-libreoffice-base
-          tag: << pipeline.parameters.lo_version >>
+          tag: << pipeline.parameters.docker_image_tag >>
           dockerfile: Dockerfile.node16-x86_64
           no-output-timeout: 20m
           public-registry: true
