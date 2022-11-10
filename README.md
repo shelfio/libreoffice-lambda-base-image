@@ -6,6 +6,8 @@
 
 Includes CJK fonts support! 877 MB in size.
 
+[Blog post announcement](https://vladholubiev.medium.com/running-libreoffice-in-aws-lambda-2022-edition-open-sourced-9bb0028911d8)
+
 ### Node.js 16 x86_64
 
 > Set environment variable `HOME=/tmp` in your Lambda function.
