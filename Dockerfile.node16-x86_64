@@ -22,6 +22,8 @@ RUN cd LibreOffice_7.4.2.3_Linux_x86-64_rpm/RPMS && \
     cd /opt/libreoffice7.4/ && \
     strip ./**/* || true
 
+ENV HOME=/tmp
+
 # Trigger dummy run to generate bootstrap files to improve cold start performance
 RUN touch /tmp/test.txt \
     && cd /tmp \
@@ -30,4 +32,3 @@ RUN touch /tmp/test.txt \
         --outdir /tmp /tmp/test.txt \
     && rm /tmp/test.*
 
-ENV HOME=/tmp
