@@ -14,7 +14,7 @@ RUN yum install \
     yum clean all
 
 RUN set -xo pipefail && \
-    curl "https://download.documentfoundation.org/libreoffice/src/7.5.9/libreoffice-7.5.9.2.tar.xz?idx=1" | tar -xz
+    curl "https://www.libreoffice.org/download/download-libreoffice/?type=rpm-x86_64&version=7.5.9&lang=en-US" | tar -xz
 
 RUN cd LibreOffice_7.4.3.2_Linux_x86-64_rpm/RPMS && \
     yum install *.rpm -y && \
