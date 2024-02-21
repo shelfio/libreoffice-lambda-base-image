@@ -7,15 +7,15 @@ orbs:
 parameters:
   docker_image_tag:
     type: string
-    default: '7.4-node16-x86_64'
+    default: "7.4-node18-x86_64"
 
 jobs:
   build:
-    executor: 'aws-ecr/default'
+    executor: "aws-ecr/default"
     steps:
       - checkout
       - aws-ecr/build-image:
-          dockerfile: Dockerfile.node16-x86_64
+          dockerfile: Dockerfile.node18-x86_64
           no-output-timeout: 10m
           tag: << pipeline.parameters.docker_image_tag >>
           region: ${AWS_DEFAULT_REGION}
@@ -28,9 +28,9 @@ workflows:
   build_and_push_image:
     jobs:
       - docker/hadolint:
-          dockerfiles: Dockerfile.node16-x86_64
+          dockerfiles: Dockerfile.node18-x86_64
           executor-class: medium
-          ignore-rules: 'DL3033,SC3040,DL4006,DL3003,DL3032,SC2015'
+          ignore-rules: "DL3033,SC3040,DL4006,DL3003,DL3032,SC2015"
 
       - build:
           context: prod-us
@@ -48,7 +48,7 @@ workflows:
           create-repo: false
           repo: lambda-libreoffice-base
           tag: << pipeline.parameters.docker_image_tag >>
-          dockerfile: Dockerfile.node16-x86_64
+          dockerfile: Dockerfile.node18-x86_64
           no-output-timeout: 20m
           public-registry: true
           push-image: true
