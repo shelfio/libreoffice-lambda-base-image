@@ -7,7 +7,7 @@ orbs:
 parameters:
   docker_image_tag:
     type: string
-    default: '7.5-node18-x86_64'
+    default: '7.6-node18-x86_64'
 
 jobs:
   build:
