@@ -14,12 +14,12 @@ RUN yum install \
     yum clean all
 
 RUN set -xo pipefail && \
-    curl "https://www.mirrorservice.org/sites/download.documentfoundation.org/tdf/libreoffice/stable/7.5.9/rpm/x86_64/LibreOffice_7.5.9_Linux_x86-64_rpm.tar.gz" | tar -xz
+    curl "https://mirrors.ukfast.co.uk/sites/documentfoundation.org/tdf/libreoffice/stable/7.6.5/rpm/x86_64/LibreOffice_7.6.5_Linux_x86-64_rpm.tar.gz" | tar -xz
 
-RUN cd LibreOffice_7.5.9.2_Linux_x86-64_rpm/RPMS && \
+RUN cd LibreOffice_7.6.5.2_Linux_x86-64_rpm/RPMS && \
     yum install *.rpm -y && \
-    rm -rf /var/task/LibreOffice_7.5.9* && \
-    cd /opt/libreoffice7.5/ && \
+    rm -rf /var/task/LibreOffice_7.6.5.2* && \
+    cd /opt/libreoffice7.6/ && \
     strip ./**/* || true
 
 ENV HOME=/tmp
@@ -27,7 +27,7 @@ ENV HOME=/tmp
 # Trigger dummy run to generate bootstrap files to improve cold start performance
 RUN touch /tmp/test.txt \
     && cd /tmp \
-    && libreoffice7.5 --headless --invisible --nodefault --view \
+    && libreoffice7.6 --headless --invisible --nodefault --view \
         --nolockcheck --nologo --norestore --convert-to pdf \
         --outdir /tmp /tmp/test.txt \
     && rm /tmp/test.*
