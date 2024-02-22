@@ -1,6 +1,6 @@
 # LibreOffice Lambda Base Image
 
-> LibreOffice 7.4 base image for Lambda Node.js 16 x86_64 to be used as a base for your own images.
+> LibreOffice 7.5 base image for Lambda Node.js 18 x86_64 to be used as a base for your own images.
 
 ## Usage
 
@@ -8,12 +8,12 @@ Includes CJK fonts support! 877 MB in size.
 
 [Blog post announcement](https://vladholubiev.medium.com/running-libreoffice-in-aws-lambda-2022-edition-open-sourced-9bb0028911d8)
 
-### Node.js 16 x86_64
+### Node.js 18 x86_64
 
 > Set environment variable `HOME=/tmp` in your Lambda function.
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:7.4-node16-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:7.5-node18-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -48,6 +48,7 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 
 ## Available Tags & Versions
 
+* `7.5-node18-x86_64`
 * `7.4-node16-x86_64`
 * `7.3-node16-x86_64`
 
