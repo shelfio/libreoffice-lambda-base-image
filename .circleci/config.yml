@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+  aws-cli: circleci/aws-cli@4.1.3
   aws-ecr: circleci/aws-ecr@9.1.0
   docker: circleci/docker@2.1.3
 
@@ -16,8 +17,11 @@ jobs:
       - checkout
       - aws-ecr/build_image:
           dockerfile: Dockerfile.node20-x86_64
+          no_output_timeout: 10m
           tag: << pipeline.parameters.docker_image_tag >>
           region: ${AWS_DEFAULT_REGION}
+          skip_when_tags_exist: false
+          push_image: false
           repo: lambda-libreoffice-base
 
 workflows:
@@ -36,22 +40,20 @@ workflows:
                 - /feature\/.*/
 
       - aws-ecr/build_and_push_image:
+          auth:
+            - aws-cli/setup
           context: prod-us
           executor: aws-ecr/default
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-cli-version: latest
-          create-repo: false
+          create_repo: false
           repo: lambda-libreoffice-base
           tag: << pipeline.parameters.docker_image_tag >>
           dockerfile: Dockerfile.node20-x86_64
-          no-output-timeout: 20m
-          public-registry: true
-          push-image: true
+          no_output_timeout: 20m
+          public_registry: true
+          push_image: true
           region: ${AWS_DEFAULT_REGION}
-          registry-id: AWS_ACCOUNT_ID
-          repo-scan-on-push: true
-          skip-when-tags-exist: false
+          repo_scan_on_push: true
+          skip_when_tags_exist: false
           filters:
             branches:
               only:
