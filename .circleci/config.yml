@@ -55,6 +55,7 @@ workflows:
           repo_scan_on_push: true
           skip_when_tags_exist: false
           account_id: AWS_ACCOUNT_ID
+          public_registry_alias: shelf
           filters:
             branches:
               only:
