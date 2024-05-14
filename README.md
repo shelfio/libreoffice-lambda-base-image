@@ -1,6 +1,6 @@
 # LibreOffice Lambda Base Image
 
-> LibreOffice 7.7 base image for Lambda Node.js 20 x86_64 to be used as a base for your own images.
+> LibreOffice 7.6 base image for Lambda Node.js 20 x86_64 to be used as a base for your own images.
 
 ## Usage
 
@@ -13,7 +13,7 @@ Includes CJK fonts support! 877 MB in size.
 > Set environment variable `HOME=/tmp` in your Lambda function.
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:7.7-node20-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:7.6-node20-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -48,7 +48,7 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 
 ## Available Tags & Versions
 
-* `7.7-node20-x86_64`
+* `7.6-node20-x86_64`
 * `7.6-node18-x86_64`
 * `7.4-node16-x86_64`
 * `7.3-node16-x86_64`
