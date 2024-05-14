@@ -54,6 +54,7 @@ workflows:
           region: ${AWS_DEFAULT_REGION}
           repo_scan_on_push: true
           skip_when_tags_exist: false
+          account_id: AWS_ACCOUNT_ID
           filters:
             branches:
               only:
