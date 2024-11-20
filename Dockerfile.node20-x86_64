@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/nodejs:20-x86_64
+FROM public.ecr.aws/lambda/nodejs:22-x86_64
 
 ENV PATH=/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin
 
