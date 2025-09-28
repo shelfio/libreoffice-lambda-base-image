@@ -1,24 +1,35 @@
 FROM public.ecr.aws/lambda/python:3.12-x86_64
 
+ARG LIBREOFFICE_CHANNEL=stable
+ARG LIBREOFFICE_VERSION=25.2.5
+ARG LIBREOFFICE_BUILD=25.2.5.2
+ARG LIBREOFFICE_DOWNLOAD_BASE=https://download.documentfoundation.org/libreoffice
+
 ENV PATH=/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin
 
 # Configure linker to correctly point to libraries
 ENV LD_LIBRARY_PATH="/usr/lib:/usr/lib64"
 RUN dnf install -y xorg-x11-fonts-* libSM.x86_64 libXinerama-devel google-noto-sans-cjk-fonts binutils tar gzip xz \
-                    openssl nss-tools dbus-libs cups-libs && dnf clean all
+                    openssl nss-tools dbus-libs cups-libs libxslt && dnf clean all
 
 RUN cp /lib64/libssl.so.3 /lib64/libssl3.so
 
-RUN mkdir ~/libre && cd ~/libre && curl -s -L https://downloadarchive.documentfoundation.org/libreoffice/old/7.6.7.2/rpm/x86_64/LibreOffice_7.6.7.2_Linux_x86-64_rpm.tar.gz | tar xvz
-
-RUN cd ~/libre/LibreOffice_7.6.7.2_Linux_x86-64_rpm/RPMS/ && rpm -Uvh *.rpm && rm -fr ~/libre
+RUN set -eux \
+    && libre_tmp="$(mktemp -d -t libreoffice-XXXXXXXX)" \
+    && cd "${libre_tmp}" \
+    && libre_archive="LibreOffice_${LIBREOFFICE_VERSION}_Linux_x86-64_rpm.tar.gz" \
+    && libre_repo="${LIBREOFFICE_DOWNLOAD_BASE}/${LIBREOFFICE_CHANNEL}/${LIBREOFFICE_VERSION}/rpm/x86_64" \
+    && curl --fail --show-error --location --retry 3 --retry-delay 2 -o "${libre_archive}" "${libre_repo}/${libre_archive}" \
+    && tar -xzf "${libre_archive}" \
+    && rpm -Uvh "LibreOffice_${LIBREOFFICE_BUILD}_Linux_x86-64_rpm/RPMS/"*.rpm \
+    && rm -rf "${libre_tmp}"
 
 ENV HOME=/tmp
 
 # Trigger dummy run to generate bootstrap files to improve cold start performance
 RUN touch /tmp/test.txt \
     && cd /tmp \
-    && libreoffice7.6 --headless --invisible --nodefault --view \
+    && libreoffice25.2 --headless --invisible --nodefault --view \
         --nolockcheck --nologo --norestore --convert-to pdf \
         --outdir /tmp /tmp/test.txt \
     && rm /tmp/test.*
