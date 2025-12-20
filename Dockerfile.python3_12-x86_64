@@ -1,8 +1,8 @@
 FROM public.ecr.aws/lambda/python:3.12-x86_64
 
 ARG LIBREOFFICE_CHANNEL=stable
-ARG LIBREOFFICE_VERSION=25.2.5
-ARG LIBREOFFICE_BUILD=25.2.5.2
+ARG LIBREOFFICE_VERSION=25.8.4
+ARG LIBREOFFICE_BUILD=25.8.4.2
 ARG LIBREOFFICE_DOWNLOAD_BASE=https://download.documentfoundation.org/libreoffice
 
 ENV PATH=/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin
@@ -29,7 +29,7 @@ ENV HOME=/tmp
 # Trigger dummy run to generate bootstrap files to improve cold start performance
 RUN touch /tmp/test.txt \
     && cd /tmp \
-    && libreoffice25.2 --headless --invisible --nodefault --view \
+    && libreoffice25.8 --headless --invisible --nodefault --view \
         --nolockcheck --nologo --norestore --convert-to pdf \
         --outdir /tmp /tmp/test.txt \
     && rm /tmp/test.*

@@ -1,6 +1,6 @@
 # LibreOffice Lambda Base Image
 
-> LibreOffice 25.2 base image for Lambda Node.js 20/22 x86_64 and Python 3.12/3.13 x86_64 to be used as a base for your own images.
+> LibreOffice 25.8 base image for Lambda Node.js 20/22/24 x86_64 and Python 3.12/3.13/3.14 x86_64 to be used as a base for your own images.
 
 ## Usage
 
@@ -10,10 +10,10 @@ Includes CJK fonts support! 877 MB in size.
 
 > Set environment variable `HOME=/tmp` in your Lambda function.
 
-### Node.js 22 x86_64
+### Node.js 24 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.2-node22-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-node24-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -31,7 +31,33 @@ module.exports.handler = () => {
 
   execSync(`
   cd /tmp
-  libreoffice25.2 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  libreoffice25.8 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  `);
+};
+```
+
+### Node.js 22 x86_64
+
+```Dockerfile
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-node22-x86_64
+
+COPY handler.js ${LAMBDA_TASK_ROOT}/
+
+CMD [ "handler.handler" ]
+```
+
+And your `handler.js`:
+
+```javascript
+const {execSync} = require('child_process');
+const {writeFileSync} = require('fs');
+
+module.exports.handler = () => {
+  writeFileSync('/tmp/hello.txt', Buffer.from('Hello World!'));
+
+  execSync(`
+  cd /tmp
+  libreoffice25.8 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
 };
 ```
@@ -39,7 +65,7 @@ module.exports.handler = () => {
 ### Node.js 20 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.2-node20-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-node20-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -57,15 +83,15 @@ module.exports.handler = () => {
 
   execSync(`
   cd /tmp
-  libreoffice25.2 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  libreoffice25.8 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
 };
 ```
 
-### Python 3.13 x86_64
+### Python 3.14 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.2-python3.13-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-python3.14-x86_64
 
 COPY handler.py ${LAMBDA_TASK_ROOT}/
 
@@ -82,7 +108,44 @@ def handler(event, context):
         f.write('Hello World!')
 
     subprocess.run([
-        'libreoffice25.2',
+        'libreoffice25.8',
+        '--headless',
+        '--invisible',
+        '--nodefault',
+        '--view',
+        '--nolockcheck',
+        '--nologo',
+        '--norestore',
+        '--convert-to',
+        'pdf',
+        '--outdir',
+        '/tmp',
+        '/tmp/hello.txt'
+    ], check=True)
+
+```
+
+### Python 3.13 x86_64
+
+```Dockerfile
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-python3.13-x86_64
+
+COPY handler.py ${LAMBDA_TASK_ROOT}/
+
+CMD [ "handler.handler" ]
+```
+
+And your `handler.py`:
+
+```python
+import subprocess
+
+def handler(event, context):
+    with open('/tmp/hello.txt', 'w') as f:
+        f.write('Hello World!')
+
+    subprocess.run([
+        'libreoffice25.8',
         '--headless',
         '--invisible',
         '--nodefault',
@@ -102,7 +165,7 @@ def handler(event, context):
 ### Python 3.12 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.2-python3.12-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-python3.12-x86_64
 
 COPY handler.py ${LAMBDA_TASK_ROOT}/
 
@@ -119,7 +182,7 @@ def handler(event, context):
         f.write('Hello World!')
 
     subprocess.run([
-        'libreoffice25.2',
+        'libreoffice25.8',
         '--headless',
         '--invisible',
         '--nodefault',
@@ -146,11 +209,13 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 
 ## Available Tags & Versions
 
-### Current Versions (LibreOffice 25.2)
-* `25.2-node22-x86_64` - Node.js 22 with LibreOffice 25.2.5
-* `25.2-node20-x86_64` - Node.js 20 with LibreOffice 25.2.5
-* `25.2-python3.13-x86_64` - Python 3.13 with LibreOffice 25.2.5
-* `25.2-python3.12-x86_64` - Python 3.12 with LibreOffice 25.2.5
+### Current Versions (LibreOffice 25.8)
+* `25.8-node24-x86_64` - Node.js 24 with LibreOffice 25.8.4
+* `25.8-node22-x86_64` - Node.js 22 with LibreOffice 25.8.4
+* `25.8-node20-x86_64` - Node.js 20 with LibreOffice 25.8.4
+* `25.8-python3.14-x86_64` - Python 3.14 with LibreOffice 25.8.4
+* `25.8-python3.13-x86_64` - Python 3.13 with LibreOffice 25.8.4
+* `25.8-python3.12-x86_64` - Python 3.12 with LibreOffice 25.8.4
 
 ### Legacy Versions (LibreOffice 7.6)
 * `7.6-node20-x86_64` - Node.js 20 with LibreOffice 7.6
