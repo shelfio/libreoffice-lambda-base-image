@@ -1,6 +1,6 @@
 # LibreOffice Lambda Base Image
 
-> LibreOffice 25.8 base image for Lambda Node.js 20/22/24 x86_64 and Python 3.12/3.13/3.14 x86_64 to be used as a base for your own images.
+> LibreOffice 26.2 base image for Lambda Node.js 20/22/24 x86_64 and Python 3.12/3.13/3.14 x86_64 to be used as a base for your own images.
 
 ## Usage
 
@@ -13,7 +13,7 @@ Includes CJK fonts support! 877 MB in size.
 ### Node.js 24 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-node24-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-node24-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -31,7 +31,7 @@ module.exports.handler = () => {
 
   execSync(`
   cd /tmp
-  libreoffice25.8 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  libreoffice --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
 };
 ```
@@ -39,7 +39,7 @@ module.exports.handler = () => {
 ### Node.js 22 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-node22-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-node22-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -57,7 +57,7 @@ module.exports.handler = () => {
 
   execSync(`
   cd /tmp
-  libreoffice25.8 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  libreoffice --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
 };
 ```
@@ -65,7 +65,7 @@ module.exports.handler = () => {
 ### Node.js 20 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-node20-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-node20-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -83,7 +83,7 @@ module.exports.handler = () => {
 
   execSync(`
   cd /tmp
-  libreoffice25.8 --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
+  libreoffice --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
 };
 ```
@@ -91,7 +91,7 @@ module.exports.handler = () => {
 ### Python 3.14 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-python3.14-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-python3.14-x86_64
 
 COPY handler.py ${LAMBDA_TASK_ROOT}/
 
@@ -108,7 +108,7 @@ def handler(event, context):
         f.write('Hello World!')
 
     subprocess.run([
-        'libreoffice25.8',
+        'libreoffice',
         '--headless',
         '--invisible',
         '--nodefault',
@@ -128,7 +128,7 @@ def handler(event, context):
 ### Python 3.13 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-python3.13-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-python3.13-x86_64
 
 COPY handler.py ${LAMBDA_TASK_ROOT}/
 
@@ -145,7 +145,7 @@ def handler(event, context):
         f.write('Hello World!')
 
     subprocess.run([
-        'libreoffice25.8',
+        'libreoffice',
         '--headless',
         '--invisible',
         '--nodefault',
@@ -165,7 +165,7 @@ def handler(event, context):
 ### Python 3.12 x86_64
 
 ```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:25.8-python3.12-x86_64
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-python3.12-x86_64
 
 COPY handler.py ${LAMBDA_TASK_ROOT}/
 
@@ -182,7 +182,7 @@ def handler(event, context):
         f.write('Hello World!')
 
     subprocess.run([
-        'libreoffice25.8',
+        'libreoffice',
         '--headless',
         '--invisible',
         '--nodefault',
@@ -209,7 +209,15 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 
 ## Available Tags & Versions
 
-### Current Versions (LibreOffice 25.8)
+### Current Versions (LibreOffice 26.2)
+* `26.2-node24-x86_64` - Node.js 24 with LibreOffice 26.2.2
+* `26.2-node22-x86_64` - Node.js 22 with LibreOffice 26.2.2
+* `26.2-node20-x86_64` - Node.js 20 with LibreOffice 26.2.2
+* `26.2-python3.14-x86_64` - Python 3.14 with LibreOffice 26.2.2
+* `26.2-python3.13-x86_64` - Python 3.13 with LibreOffice 26.2.2
+* `26.2-python3.12-x86_64` - Python 3.12 with LibreOffice 26.2.2
+
+### Previous Versions (LibreOffice 25.8)
 * `25.8-node24-x86_64` - Node.js 24 with LibreOffice 25.8.4
 * `25.8-node22-x86_64` - Node.js 22 with LibreOffice 25.8.4
 * `25.8-node20-x86_64` - Node.js 20 with LibreOffice 25.8.4
