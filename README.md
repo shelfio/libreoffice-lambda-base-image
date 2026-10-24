@@ -210,12 +210,12 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 ## Available Tags & Versions
 
 ### Current Versions (LibreOffice 26.2)
-* `26.2-node24-x86_64` - Node.js 24 with LibreOffice 26.2.2
-* `26.2-node22-x86_64` - Node.js 22 with LibreOffice 26.2.2
-* `26.2-node20-x86_64` - Node.js 20 with LibreOffice 26.2.2
-* `26.2-python3.14-x86_64` - Python 3.14 with LibreOffice 26.2.2
-* `26.2-python3.13-x86_64` - Python 3.13 with LibreOffice 26.2.2
-* `26.2-python3.12-x86_64` - Python 3.12 with LibreOffice 26.2.2
+* `26.2-node24-x86_64` - Node.js 24 with LibreOffice 26.2.6
+* `26.2-node22-x86_64` - Node.js 22 with LibreOffice 26.2.6
+* `26.2-node20-x86_64` - Node.js 20 with LibreOffice 26.2.6
+* `26.2-python3.14-x86_64` - Python 3.14 with LibreOffice 26.2.6
+* `26.2-python3.13-x86_64` - Python 3.13 with LibreOffice 26.2.6
+* `26.2-python3.12-x86_64` - Python 3.12 with LibreOffice 26.2.6
 
 ### Previous Versions (LibreOffice 25.8)
 * `25.8-node24-x86_64` - Node.js 24 with LibreOffice 25.8.4
