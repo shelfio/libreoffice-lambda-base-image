@@ -1,7 +1,7 @@
 FROM public.ecr.aws/lambda/python:3.12-x86_64
 
 ARG LIBREOFFICE_CHANNEL=stable
-ARG LIBREOFFICE_VERSION=26.2.2
+ARG LIBREOFFICE_VERSION=26.2.6
 ARG LIBREOFFICE_DOWNLOAD_BASE=https://download.documentfoundation.org/libreoffice
 
 ENV PATH=/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin
