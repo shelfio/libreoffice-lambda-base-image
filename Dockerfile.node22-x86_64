@@ -1,15 +1,21 @@
 FROM public.ecr.aws/lambda/nodejs:22-x86_64
 
 ARG LIBREOFFICE_CHANNEL=stable
-ARG LIBREOFFICE_VERSION=26.2.2
+ARG LIBREOFFICE_VERSION=26.2.6
 ARG LIBREOFFICE_DOWNLOAD_BASE=https://download.documentfoundation.org/libreoffice
 
 ENV PATH=/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin
 
 # Configure linker to correctly point to libraries
 ENV LD_LIBRARY_PATH="/usr/lib:/usr/lib64"
-RUN dnf install -y xorg-x11-fonts-* libSM.x86_64 libXinerama-devel google-noto-sans-cjk-fonts binutils tar gzip xz \
-                    openssl nss-tools dbus-libs cups-libs libxslt && dnf clean all
+# Amazon Linux 2023 release for the package upgrade and install: the Lambda base image lags the
+# security updates. Keep it equal to AL2023_RELEASE in the other Dockerfiles. dnf is microdnf in
+# the Lambda base image: options go before the command.
+ARG AL2023_RELEASE=2023.12.20261013
+RUN dnf -y --releasever="${AL2023_RELEASE}" upgrade \
+    && dnf -y --releasever="${AL2023_RELEASE}" install xorg-x11-fonts-* libSM.x86_64 libXinerama-devel \
+       google-noto-sans-cjk-fonts binutils tar gzip xz openssl nss-tools dbus-libs cups-libs libxslt \
+    && dnf clean all
 
 RUN cp /lib64/libssl.so.3 /lib64/libssl3.so
 
