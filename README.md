@@ -1,6 +1,6 @@
 # LibreOffice Lambda Base Image
 
-> LibreOffice 26.2 base image for Lambda Node.js 20/22/24 x86_64 and Python 3.12/3.13/3.14 x86_64 to be used as a base for your own images.
+> LibreOffice 26.2 base image for Lambda Node.js 22/24 x86_64 and Python 3.12/3.13/3.14 x86_64 to be used as a base for your own images.
 
 ## Usage
 
@@ -40,32 +40,6 @@ module.exports.handler = () => {
 
 ```Dockerfile
 FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-node22-x86_64
-
-COPY handler.js ${LAMBDA_TASK_ROOT}/
-
-CMD [ "handler.handler" ]
-```
-
-And your `handler.js`:
-
-```javascript
-const {execSync} = require('child_process');
-const {writeFileSync} = require('fs');
-
-module.exports.handler = () => {
-  writeFileSync('/tmp/hello.txt', Buffer.from('Hello World!'));
-
-  execSync(`
-  cd /tmp
-  libreoffice --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
-  `);
-};
-```
-
-### Node.js 20 x86_64
-
-```Dockerfile
-FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-node20-x86_64
 
 COPY handler.js ${LAMBDA_TASK_ROOT}/
 
@@ -212,7 +186,7 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 ### Current Versions (LibreOffice 26.2)
 * `26.2-node24-x86_64` - Node.js 24 with LibreOffice 26.2.6
 * `26.2-node22-x86_64` - Node.js 22 with LibreOffice 26.2.6
-* `26.2-node20-x86_64` - Node.js 20 with LibreOffice 26.2.6
+* `26.2-node20-x86_64` - Node.js 20 with LibreOffice 26.2.6, no longer updated: Node.js 20 is at end of life
 * `26.2-python3.14-x86_64` - Python 3.14 with LibreOffice 26.2.6
 * `26.2-python3.13-x86_64` - Python 3.13 with LibreOffice 26.2.6
 * `26.2-python3.12-x86_64` - Python 3.12 with LibreOffice 26.2.6
