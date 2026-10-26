@@ -11,7 +11,7 @@ ENV LD_LIBRARY_PATH="/usr/lib:/usr/lib64"
 # Amazon Linux 2023 release for the package upgrade and install: the Lambda base image lags the
 # security updates. Keep it equal to AL2023_RELEASE in the other Dockerfiles. dnf is microdnf in
 # the Lambda base image: options go before the command.
-ARG AL2023_RELEASE=2023.12.20261013
+ARG AL2023_RELEASE=2023.12.20261021
 RUN dnf -y --releasever="${AL2023_RELEASE}" upgrade \
     && dnf -y --releasever="${AL2023_RELEASE}" install xorg-x11-fonts-* libSM.x86_64 libXinerama-devel \
        google-noto-sans-cjk-fonts binutils tar gzip xz openssl nss-tools dbus-libs cups-libs libxslt \
