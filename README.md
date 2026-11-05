@@ -202,9 +202,9 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 ### Legacy Versions (LibreOffice 7.6)
 * `7.6-node20-x86_64` - Node.js 20 with LibreOffice 7.6
 * `7.6-python3.12-x86_64` - Python 3.12 with LibreOffice 7.6
-* `7.6-node18-x86_64` - Node.js 18 with LibreOffice 7.6
-* `7.4-node16-x86_64` - Node.js 16 with LibreOffice 7.4
-* `7.3-node16-x86_64` - Node.js 16 with LibreOffice 7.3
+* `7.6-node18-x86_64` - Node.js 18 with LibreOffice 7.6, no longer updated
+* `7.4-node16-x86_64` - Node.js 16 with LibreOffice 7.4, no longer updated
+* `7.3-node16-x86_64` - Node.js 16 with LibreOffice 7.3, no longer updated
 
 ## See Also
 
