@@ -31,6 +31,10 @@ RUN set -eux; \
     install -m 0755 /tmp/aws-lambda-rie /usr/local/bin/aws-lambda-rie; \
     rm /tmp/aws-lambda-rie /tmp/aws-lambda-rie.sha256
 
+# pip 26.3 bundles fixed versions of urllib3 and msgpack.
+ARG PIP_VERSION=26.3
+RUN python3 -m pip install --no-cache-dir --no-input --disable-pip-version-check "pip==${PIP_VERSION}"
+
 RUN set -eux \
     && libre_tmp="$(mktemp -d -t libreoffice-XXXXXXXX)" \
     && cd "${libre_tmp}" \

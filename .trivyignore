@@ -1,0 +1,4 @@
+# pip bundles pkg_resources from setuptools 70.3.0 (pip/_vendor/vendor.txt), and no pip release
+# bundles a newer one. CVE-2025-47273 is in the setuptools PackageIndex
+# (setuptools/package_index.py), which pip does not bundle. Examine it again when pip updates it.
+CVE-2025-47273 exp:2027-05-16
