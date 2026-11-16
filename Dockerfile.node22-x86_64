@@ -19,6 +19,18 @@ RUN dnf -y --releasever="${AL2023_RELEASE}" upgrade \
 
 RUN cp /lib64/libssl.so.3 /lib64/libssl3.so
 
+# aws-lambda-rie, the Runtime Interface Emulator, serves local docker run tests only; Lambda does
+# not start it. Release 1.38 is built with a Go release that has the security fixes.
+ARG AWS_LAMBDA_RIE_VERSION=1.38
+ARG AWS_LAMBDA_RIE_SHA256=5ccd1df155e92aa3eb055e60fba492afdebf424626a7983b13a39aa5c2b71616
+RUN set -eux; \
+    curl --fail --show-error --location --retry 3 --retry-delay 2 -o /tmp/aws-lambda-rie \
+      "https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v${AWS_LAMBDA_RIE_VERSION}/aws-lambda-rie-x86_64"; \
+    printf '%s  %s\n' "${AWS_LAMBDA_RIE_SHA256}" /tmp/aws-lambda-rie > /tmp/aws-lambda-rie.sha256; \
+    sha256sum -c /tmp/aws-lambda-rie.sha256; \
+    install -m 0755 /tmp/aws-lambda-rie /usr/local/bin/aws-lambda-rie; \
+    rm /tmp/aws-lambda-rie /tmp/aws-lambda-rie.sha256
+
 RUN set -eux \
     && libre_tmp="$(mktemp -d -t libreoffice-XXXXXXXX)" \
     && cd "${libre_tmp}" \
