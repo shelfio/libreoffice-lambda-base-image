@@ -1,0 +1,12 @@
+# Accepted Trivy findings. Each entry has the Jira key and the reason in its statement and an
+# expiry date. The CI scan loads this file with --ignorefile .trivyignore.yaml.
+vulnerabilities:
+  - id: CVE-2025-47273
+    purls:
+      - pkg:pypi/setuptools@70.3.0
+    statement: >-
+      INFRA-41320: pip bundles pkg_resources from setuptools 70.3.0 (pip/_vendor/vendor.txt), and
+      no pip release bundles a newer one. The vulnerability is in the setuptools PackageIndex
+      (setuptools/package_index.py), which pip does not bundle. Examine it again when pip updates
+      its pkg_resources.
+    expired_at: 2027-05-16
