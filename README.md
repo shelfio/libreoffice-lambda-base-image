@@ -1,6 +1,6 @@
 # LibreOffice Lambda Base Image
 
-> LibreOffice 26.2 base image for Lambda Node.js 22/24 x86_64 and Python 3.12/3.13/3.14 x86_64 to be used as a base for your own images.
+> LibreOffice 26.2 base image for Lambda Node.js 22/24/26 x86_64 and Python 3.12/3.13/3.14/3.15 x86_64 to be used as a base for your own images.
 
 ## Usage
 
@@ -9,6 +9,16 @@ Includes CJK fonts support! 877 MB in size.
 [Blog post announcement](https://vladholubiev.medium.com/running-libreoffice-in-aws-lambda-2022-edition-open-sourced-9bb0028911d8)
 
 > Set environment variable `HOME=/tmp` in your Lambda function.
+
+### Node.js 26 x86_64
+
+```Dockerfile
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-node26-x86_64
+
+COPY handler.js ${LAMBDA_TASK_ROOT}/
+
+CMD [ "handler.handler" ]
+```
 
 ### Node.js 24 x86_64
 
@@ -60,6 +70,16 @@ module.exports.handler = () => {
   libreoffice --headless --invisible --nodefault --view --nolockcheck --nologo --norestore --convert-to pdf --outdir /tmp ./hello.txt
   `);
 };
+```
+
+### Python 3.15 x86_64
+
+```Dockerfile
+FROM public.ecr.aws/shelf/lambda-libreoffice-base:26.2-python3.15-x86_64
+
+COPY handler.py ${LAMBDA_TASK_ROOT}/
+
+CMD [ "handler.handler" ]
 ```
 
 ### Python 3.14 x86_64
@@ -184,9 +204,11 @@ Set environment variable `HOME=/tmp` in your Lambda function.
 ## Available Tags & Versions
 
 ### Current Versions (LibreOffice 26.2)
+* `26.2-node26-x86_64` - Node.js 26 with LibreOffice 26.2.7
 * `26.2-node24-x86_64` - Node.js 24 with LibreOffice 26.2.7
 * `26.2-node22-x86_64` - Node.js 22 with LibreOffice 26.2.7
 * `26.2-node20-x86_64` - Node.js 20 with LibreOffice 26.2.6, no longer updated: Node.js 20 is at end of life
+* `26.2-python3.15-x86_64` - Python 3.15 with LibreOffice 26.2.7
 * `26.2-python3.14-x86_64` - Python 3.14 with LibreOffice 26.2.7
 * `26.2-python3.13-x86_64` - Python 3.13 with LibreOffice 26.2.7
 * `26.2-python3.12-x86_64` - Python 3.12 with LibreOffice 26.2.7
