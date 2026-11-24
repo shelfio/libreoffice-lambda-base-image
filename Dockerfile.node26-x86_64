@@ -1,0 +1,82 @@
+FROM public.ecr.aws/lambda/nodejs:26-x86_64
+
+ARG LIBREOFFICE_CHANNEL=stable
+ARG LIBREOFFICE_VERSION=26.2.7
+ARG LIBREOFFICE_DOWNLOAD_BASE=https://download.documentfoundation.org/libreoffice
+
+ENV PATH=/var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin
+
+# Configure linker to correctly point to libraries
+ENV LD_LIBRARY_PATH="/usr/lib:/usr/lib64"
+# Amazon Linux 2023 release for the package upgrade and install: the Lambda base image lags the
+# security updates. Keep it equal to AL2023_RELEASE in the other Dockerfiles. dnf is microdnf in
+# the Lambda base image: options go before the command.
+ARG AL2023_RELEASE=2023.12.20261120
+RUN dnf -y --releasever="${AL2023_RELEASE}" upgrade \
+    && dnf -y --releasever="${AL2023_RELEASE}" install xorg-x11-fonts-* libSM.x86_64 libXinerama-devel \
+       google-noto-sans-cjk-fonts binutils tar gzip xz openssl nss-tools dbus-libs cups-libs libxslt \
+    && dnf clean all
+
+RUN cp /lib64/libssl.so.3 /lib64/libssl3.so
+
+# aws-lambda-rie, the Runtime Interface Emulator, serves local docker run tests only; Lambda does
+# not start it. Release 1.38 is built with a Go release that has the security fixes.
+ARG AWS_LAMBDA_RIE_VERSION=1.38
+ARG AWS_LAMBDA_RIE_SHA256=5ccd1df155e92aa3eb055e60fba492afdebf424626a7983b13a39aa5c2b71616
+RUN set -eux; \
+    curl --fail --show-error --location --retry 3 --retry-delay 2 -o /tmp/aws-lambda-rie \
+      "https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v${AWS_LAMBDA_RIE_VERSION}/aws-lambda-rie-x86_64"; \
+    printf '%s  %s\n' "${AWS_LAMBDA_RIE_SHA256}" /tmp/aws-lambda-rie > /tmp/aws-lambda-rie.sha256; \
+    sha256sum -c /tmp/aws-lambda-rie.sha256; \
+    install -m 0755 /tmp/aws-lambda-rie /usr/local/bin/aws-lambda-rie; \
+    rm /tmp/aws-lambda-rie /tmp/aws-lambda-rie.sha256
+
+# The npm packages in the Lambda base image with security fixes:
+# - npm 11.21.2 bundles fixed versions of its dependencies. npm 10 has no release with them.
+# - The AWS SDK in /var/runtime/node_modules gets patch releases of axios, follow-redirects, undici
+#   and brace-expansion. They have the same dependencies as the installed versions. A package that
+#   is not there, or is already at the same or a newer version, does not change.
+ARG NPM_VERSION=11.21.2
+ARG AWS_SDK_PACKAGE_FIXES="axios@1.20.0 follow-redirects@1.16.2 undici@7.30.1 brace-expansion@1.1.20"
+RUN set -eux; \
+    npm install --global --no-audit --no-fund "npm@${NPM_VERSION}"; \
+    sdk_modules=/var/runtime/node_modules/@aws-sdk/node_modules; \
+    semver=/var/lang/lib/node_modules/npm/node_modules/semver; \
+    npm_tmp="$(mktemp -d -t npm-XXXXXXXX)"; \
+    for pkg in ${AWS_SDK_PACKAGE_FIXES}; do \
+      name="${pkg%@*}"; \
+      version="${pkg##*@}"; \
+      if [ ! -f "${sdk_modules}/${name}/package.json" ]; then continue; fi; \
+      installed="$(node -p "require('${sdk_modules}/${name}/package.json').version")"; \
+      if node -e "process.exit(require('${semver}').gte(process.argv[1], process.argv[2]) ? 0 : 1)" "${installed}" "${version}"; then continue; fi; \
+      tarball="$(npm pack --silent --pack-destination "${npm_tmp}" "${pkg}")"; \
+      rm -rf "${sdk_modules:?}/${name}"; \
+      mkdir "${sdk_modules}/${name}"; \
+      tar -xzf "${npm_tmp}/${tarball}" --no-same-owner --strip-components=1 -C "${sdk_modules}/${name}"; \
+      test "$(node -p "require('${sdk_modules}/${name}/package.json').version")" = "${version}"; \
+    done; \
+    rm -rf "${npm_tmp}" /root/.npm
+
+RUN set -eux \
+    && libre_tmp="$(mktemp -d -t libreoffice-XXXXXXXX)" \
+    && cd "${libre_tmp}" \
+    && libre_series="${LIBREOFFICE_VERSION%.*}" \
+    && libre_archive="LibreOffice_${LIBREOFFICE_VERSION}_Linux_x86-64_rpm.tar.gz" \
+    && libre_repo="${LIBREOFFICE_DOWNLOAD_BASE}/${LIBREOFFICE_CHANNEL}/${LIBREOFFICE_VERSION}/rpm/x86_64" \
+    && curl --fail --show-error --location --retry 3 --retry-delay 2 -o "${libre_archive}" "${libre_repo}/${libre_archive}" \
+    && tar -xzf "${libre_archive}" \
+    && libre_rpm_root="$(find . -maxdepth 1 -type d -name 'LibreOffice_*_Linux_x86-64_rpm' -print -quit)" \
+    && test -n "${libre_rpm_root}" \
+    && rpm -Uvh "${libre_rpm_root}/RPMS/"*.rpm \
+    && ln -sf "/usr/bin/libreoffice${libre_series}" /usr/bin/libreoffice \
+    && rm -rf "${libre_tmp}"
+
+ENV HOME=/tmp
+
+# Trigger dummy run to generate bootstrap files to improve cold start performance
+RUN touch /tmp/test.txt \
+    && cd /tmp \
+    && libreoffice --headless --invisible --nodefault --view \
+        --nolockcheck --nologo --norestore --convert-to pdf \
+        --outdir /tmp /tmp/test.txt \
+    && rm /tmp/test.*
